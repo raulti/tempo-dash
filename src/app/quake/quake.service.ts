@@ -12,11 +12,8 @@ export class QuakeService extends GenericService {
         super();
     }
 
-    listPessoas(): Observable<any> {
-        return this.http.get<any>(this.getUrl('parse'), this.httpOptions)
-            .pipe(
-                retry(1),
-                catchError(this.handleError)
-            )
+    getRelativeUrl(){
+        console.log(this.getUrl('parse'));
+        return this.getUrl('parse');
     }
 }

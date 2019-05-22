@@ -68,7 +68,8 @@
     "uglify-js": "3.3.28",
     "validate": "3.0.1",
     "web-animations-js": "2.3.1",
-    "zone.js": "0.8.26"
+    "zone.js": "0.8.26",
+    "angular-file-uploader": "5.0.2"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "0.6.3",

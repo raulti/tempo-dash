@@ -4,6 +4,8 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NotificationService } from 'src/app/shared/notifications/notification.service';
 import { QuakeService } from '../quake.service';
+import { ValidationFormsComponent } from 'src/app/shared/validationforms/validationforms.component';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 declare interface DataTable {
   headerRow: string[];
@@ -17,20 +19,48 @@ declare const $: any;
     templateUrl: 'list.component.html'
 })
 
-export class ListComponent implements OnInit, AfterViewInit {
+export class ListComponent extends ValidationFormsComponent implements OnInit, AfterViewInit {
     public dataTable: DataTable;
     private table = $('#datatables').DataTable();
+    private formGroup: FormGroup;
+    private afuConfig: {};
 
-    constructor(private router: Router, private _notificationService: NotificationService, private _quakeService: QuakeService) {
+    constructor(private router: Router, private formBuilder: FormBuilder, private _notificationService: NotificationService, private _quakeService: QuakeService) {
+      super();
     }
 
     ngOnInit() {
-        this.list();
+
+      this.afuConfig = {
+        multiple: false,
+        formatsAllowed: ".txt",
+        maxSize: "1",
+        uploadAPI:  {
+          url: this._quakeService.getRelativeUrl()
+        },
+        hideProgressBar: false,
+        hideResetBtn: false,
+        hideSelectBtn: false,
+        replaceTexts: {
+          selectFileBtn: 'Selecionar Log',
+          resetBtn: 'Limpar',
+          uploadBtn: 'Subir arquivo',
+          dragNDropBox: 'Drag N Drop',
+          attachPinBtn: 'Subir arquivo...',
+          afterUploadMsg_success: 'Upload Complete!',
+          afterUploadMsg_error: 'Falha ao subir o arquivo!'
+      }
+    };         
+       
     }
 
     ngAfterViewInit() {
-      this.creatDataTable();
-      this.addClassFormGroup();
+      // this.creatDataTable();
+      // this.addClassFormGroup();
+    }
+
+    returnRequest(data){
+      console.log(data);
     }
 
     addClassFormGroup(){
@@ -56,12 +86,6 @@ export class ListComponent implements OnInit, AfterViewInit {
         headerRow: [ 'Nome', 'cpf', 'e-mail', 'Ações' ],
         dataRows: rows
       };
-    }
-
-    list(){
-      this._quakeService.listPessoas().subscribe((data) => {
-        this.dataTableConfig(this.makeDataTableRowns(data));
-      })
     }
 
     makeDataTableRowns(data){
