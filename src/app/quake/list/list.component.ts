@@ -19,13 +19,11 @@ declare const $: any;
     templateUrl: 'list.component.html'
 })
 
-export class ListComponent extends ValidationFormsComponent implements OnInit, AfterViewInit {
-    public dataTable: DataTable;
-    private table = $('#datatables').DataTable();
-    private formGroup: FormGroup;
+export class ListComponent extends ValidationFormsComponent implements OnInit {
     private afuConfig: {};
+    public jogos = [];
 
-    constructor(private router: Router, private formBuilder: FormBuilder, private _notificationService: NotificationService, private _quakeService: QuakeService) {
+    constructor(private router: Router, private _notificationService: NotificationService, private _quakeService: QuakeService) {
       super();
     }
 
@@ -33,7 +31,7 @@ export class ListComponent extends ValidationFormsComponent implements OnInit, A
 
       this.afuConfig = {
         multiple: false,
-        formatsAllowed: ".txt",
+        formatsAllowed: ".log",
         maxSize: "1",
         uploadAPI:  {
           url: this._quakeService.getRelativeUrl()
@@ -47,52 +45,13 @@ export class ListComponent extends ValidationFormsComponent implements OnInit, A
           uploadBtn: 'Subir arquivo',
           dragNDropBox: 'Drag N Drop',
           attachPinBtn: 'Subir arquivo...',
-          afterUploadMsg_success: 'Upload Complete!',
+          afterUploadMsg_success: 'Arquivo upado!',
           afterUploadMsg_error: 'Falha ao subir o arquivo!'
-      }
-    };         
-       
-    }
-
-    ngAfterViewInit() {
-      // this.creatDataTable();
-      // this.addClassFormGroup();
+        }
+      };         
     }
 
     returnRequest(data){
-      console.log(data);
-    }
-
-    addClassFormGroup(){
-      $('.card .material-datatables label').addClass('form-group');
-    }
-
-    creatDataTable(){
-      $('#datatables').DataTable({
-        "pagingType": "full_numbers",
-        "lengthMenu": [
-          [10, 25, 50, -1],
-          [10, 25, 50, "Todos"]
-        ],
-        responsive: true,
-        language: {
-          url: './assets/data-table-pt-br.json'
-        }
-      });
-    }
-
-    dataTableConfig(rows){
-      this.dataTable = {
-        headerRow: [ 'Nome', 'cpf', 'e-mail', 'Ações' ],
-        dataRows: rows
-      };
-    }
-
-    makeDataTableRowns(data){
-      let newArray = [];
-      data.forEach(obj => {
-        newArray.push([obj.nome, obj.cpf, obj.email, '']);
-      });
-      return newArray;
+      this.jogos = JSON.parse(data.response).splice(1,21);
     }
 }

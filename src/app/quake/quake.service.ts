@@ -13,7 +13,6 @@ export class QuakeService extends GenericService {
     }
 
     getRelativeUrl(){
-        console.log(this.getUrl('parse'));
         return this.getUrl('parse');
     }
 }
