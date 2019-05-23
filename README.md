@@ -1,5 +1,6 @@
 Dashboard do teste
 Siga os passos abaixo para testar esta solução
+Esta Dashboard fornece a tela para upload do arquivo de log e exibição dos resultados.
 
 Requeriments{
     - Node
